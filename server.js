@@ -28,6 +28,7 @@ rollbar.log("Hello bots!");
 
 app.get('/api/robots', (req, res) => {
     try {
+        rollbar.info('someone tapped the bots')
         res.status(200).send(botsArr)
     } catch (error) {
         console.log('ERROR GETTING BOTS', error)
@@ -49,6 +50,7 @@ app.get('/api/robots/five', (req, res) => {
 
 app.post('/api/duel', (req, res) => {
     try {
+        rollbar.warning('ouch buddy')
         // getting the duos from the front end
         let {compDuo, playerDuo} = req.body
 
@@ -66,6 +68,7 @@ app.post('/api/duel', (req, res) => {
 
         // comparing the total health to determine a winner
         if (compHealthAfterAttack > playerHealthAfterAttack) {
+            
             playerRecord.losses++
             res.status(200).send('You lost!')
         } else {
@@ -80,13 +83,16 @@ app.post('/api/duel', (req, res) => {
 
 app.get('/api/player', (req, res) => {
     try {
+        rollbar.critical('Lets go!')
         res.status(200).send(playerRecord)
     } catch (error) {
         console.log('ERROR GETTING PLAYER STATS', error)
         res.sendStatus(400)
     }
 })
-app.use(rollbar.errorHandler());
+
+// app.use(rollbar.errorHandler());
+
 
 
 
