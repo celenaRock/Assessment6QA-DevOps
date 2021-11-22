@@ -16,6 +16,7 @@ const compDuoHeader = document.querySelector('#comp-duo-header')
 let choices = []
 let compDuo = []
 let playerDuo = []
+// let botsArr = []
 
 duelBtn.classList.add('hide')
 playAgainBtn.classList.add('hide')

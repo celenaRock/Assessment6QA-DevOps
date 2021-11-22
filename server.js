@@ -4,7 +4,27 @@ const app = express()
 const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 
+app.use(express.static("public"));
+
+app.get("/styles", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.css"));
+});
+app.get("/js", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.js"));
+});
+
 app.use(express.json())
+
+// include and initialize the rollbar library with your access token
+var Rollbar = require("rollbar");
+var rollbar = new Rollbar({
+  accessToken: '23f9e6abcaf04a86ab956a97d3c34a72',
+  captureUncaught: true,
+  captureUnhandledRejections: true
+});
+
+// record a generic message and send it to Rollbar
+rollbar.log("Hello bots!");
 
 app.get('/api/robots', (req, res) => {
     try {
@@ -66,8 +86,13 @@ app.get('/api/player', (req, res) => {
         res.sendStatus(400)
     }
 })
+app.use(rollbar.errorHandler());
+
+
 
 const port = process.env.PORT || 3000
+
+
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
